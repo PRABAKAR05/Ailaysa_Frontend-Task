@@ -4,14 +4,16 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SidebarNav } from "@/components/browse/BrowseComponents";
 import { newArrivals } from "@/lib/browse-data";
+import { motion } from "framer-motion";
 
 // Inline compact book card that respects its container width
 function AuthorBookCard({ title, author, coverImage, id }: { title: string; author: string; coverImage: string; id: number }) {
   return (
-    <div className="flex flex-col bg-[#F6F5F2] rounded-[12px] p-2.5 group cursor-pointer hover:shadow-md transition-shadow">
-      <div className="relative w-full h-[180px] rounded-lg overflow-hidden mb-2 shadow-sm">
+    <div className="flex flex-col bg-[#F6F5F2] rounded-[12px] p-2.5 group cursor-pointer hover:shadow-md transition-shadow h-full">
+      <div className="relative w-full aspect-[2/3] rounded-lg overflow-hidden mb-2 shadow-sm bg-gray-200">
         <Image src={coverImage} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="200px" />
         <button className="absolute top-2 right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-red-50 transition-colors z-10" onClick={(e) => e.preventDefault()}>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E53935" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -20,9 +22,9 @@ function AuthorBookCard({ title, author, coverImage, id }: { title: string; auth
         </button>
       </div>
       <p className="text-[11px] font-medium text-[#1E1E1E] truncate mb-0.5 px-0.5">{title}</p>
-      <p className="text-[11px] text-[#717171] truncate mb-2 px-0.5">by {author}</p>
+      <p className="text-[11px] text-[#717171] truncate mb-2 px-0.5">{author.startsWith('by ') ? author : `by ${author}`}</p>
       <Link href={`/book/${id}`}>
-        <button className="w-full bg-[#1A1A1A] hover:bg-[#333] text-white text-[11px] font-medium py-1.5 rounded-lg transition-colors">
+        <button className="w-full bg-[#1A1A1A] hover:bg-[#333] text-white text-[11px] font-medium py-1.5 rounded-lg transition-all active:scale-95">
           Read & Chat
         </button>
       </Link>
@@ -43,7 +45,7 @@ function HorizontalBookCard({ title, coverImage, idx }: { title: string; coverIm
           A clash of armies, a battle of gods, and the rage of a hero fuel this epic tale of war. When a leader's pride ignites a conflict.
         </p>
         <div className="mt-auto">
-          <button className="w-full bg-[#1A1A1A] hover:bg-[#333] text-white text-[11px] font-medium py-1.5 rounded-lg transition-colors">
+          <button className="w-full bg-[#1A1A1A] hover:bg-[#333] text-white text-[11px] font-medium py-1.5 rounded-lg transition-all active:scale-95">
             Read & Chat
           </button>
         </div>
@@ -55,26 +57,44 @@ function HorizontalBookCard({ title, coverImage, idx }: { title: string; coverIm
 export default function AuthorClient({ authorId }: { authorId: string }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("browse");
+  const router = useRouter();
   const books5 = newArrivals.slice(0, 5);
 
-  return (
-    <div className="min-h-screen bg-white text-[#1A1A1A]" style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}>
-      <div className="flex w-full min-h-screen">
+  const handleCategoryChange = (id: string) => {
+    setActiveCategory(id);
+    setSidebarOpen(false);
+    if (id === "browse") {
+      router.push("/browse");
+    } else {
+      router.push(`/browse#${id}`);
+    }
+  };
 
-        {/* Mobile sidebar overlay */}
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -15 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+      className="flex-1 w-full"
+    >
+      <div className="min-h-screen bg-white text-[#1A1A1A]" style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}>
+        <div className="flex w-full min-h-screen">
+
+          {/* Mobile sidebar overlay */}
         {sidebarOpen && (
           <div className="fixed inset-0 bg-black/30 z-50 md:hidden" onClick={() => setSidebarOpen(false)}>
             <aside className="w-[240px] bg-[#FDF9EE] h-full overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-              <SidebarNav activeCategory={activeCategory} onCategoryChange={(cat) => { setActiveCategory(cat); setSidebarOpen(false); }} />
+              <SidebarNav activeCategory={activeCategory} onCategoryChange={handleCategoryChange} />
             </aside>
           </div>
         )}
 
-        {/* Desktop Sidebar — always visible at md+ */}
-        <aside className="hidden md:flex md:flex-col w-[240px] shrink-0 self-start">
+        {/* Desktop Sidebar */}
+        <aside className="hidden md:flex flex-col w-[260px] shrink-0 bg-[#FDF9EE] self-start rounded-br-[30px]">
           <SidebarNav
             activeCategory={activeCategory}
-            onCategoryChange={setActiveCategory}
+            onCategoryChange={handleCategoryChange}
           />
         </aside>
 
@@ -88,21 +108,21 @@ export default function AuthorClient({ authorId }: { authorId: string }) {
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
               </button>
               <nav className="hidden md:flex items-center gap-1 text-[13px]">
-                <span className="text-gray-400 hover:text-gray-600 cursor-pointer">Browse</span>
+                <Link href="/browse" className="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors">Browse</Link>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
-                <span className="text-gray-400 hover:text-gray-600 cursor-pointer">Authors</span>
+                <Link href="/browse" className="text-gray-400 hover:text-gray-600 cursor-pointer transition-colors">Authors</Link>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>
                 <span className="text-[#1A1A1A] font-medium">J.K Rowling</span>
               </nav>
             </div>
             <div className="flex items-center gap-5">
-              <button className="text-gray-400 hover:text-gray-700 transition-colors">
+              <button className="text-gray-400 hover:text-gray-700 transition-colors active:scale-95">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
               </button>
-              <button className="text-gray-400 hover:text-gray-700 transition-colors">
+              <button className="text-gray-400 hover:text-gray-700 transition-colors active:scale-95">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" /></svg>
               </button>
-              <button className="px-5 py-1.5 rounded-full border border-gray-300 text-[13px] font-medium hover:bg-gray-50 transition-colors">Login</button>
+              <button className="px-5 py-1.5 rounded-full border border-gray-300 text-[13px] font-medium hover:bg-gray-50 transition-all active:scale-95 shadow-sm">Login</button>
             </div>
           </header>
 
@@ -135,14 +155,14 @@ export default function AuthorClient({ authorId }: { authorId: string }) {
               <p className="text-[12px] text-[#717171] mb-5">Trending books among readers</p>
 
               {/* Row 1 */}
-              <div className="grid grid-cols-5 gap-3 mb-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-4">
                 {books5.map((book) => (
                   <AuthorBookCard key={book.id} id={book.id} title={book.title} author={book.author} coverImage={book.coverImage} />
                 ))}
               </div>
 
               {/* Row 2 */}
-              <div className="grid grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {books5.map((book) => (
                   <AuthorBookCard key={`r2-${book.id}`} id={book.id} title={book.title} author={book.author} coverImage={book.coverImage} />
                 ))}
@@ -165,5 +185,6 @@ export default function AuthorClient({ authorId }: { authorId: string }) {
         </div>
       </div>
     </div>
+    </motion.div>
   );
 }

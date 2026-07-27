@@ -3,7 +3,7 @@
 
 import React from "react";
 
-export const JARVIS = "Online and ready";
+const JARVIS = "Online and ready";
 
 const Mukesh = "Mukesh";
 const Anand = "Anand";
@@ -12,7 +12,7 @@ const Chicken = "Chicken";
 const Mutton = "Mutton";
 const Briyani = "Briyani";
 
-export function createBriyani() {
+function createBriyani() {
   return "Delicious Briyani made by AI";
 }
 

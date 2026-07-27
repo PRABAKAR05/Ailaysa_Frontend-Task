@@ -464,7 +464,7 @@ const NAV_ITEMS = [
   { id: "tech", label: "Tech", icon: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" },
   { id: "kids", label: "Kids", icon: "M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
   { id: "classics", label: "Classics", icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" },
-  { id: "masalapacket", label: "Masala Packet", icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" },
+
   { id: "settings", label: "Settings", icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" },
 ];
 
@@ -475,39 +475,54 @@ interface SidebarNavProps {
 
 export function SidebarNav({ activeCategory, onCategoryChange }: SidebarNavProps) {
   return (
-    <div className="w-full bg-[#FDF9EE] flex flex-col py-8 px-6 rounded-br-[32px] shadow-sm pb-10">
+    <div className="w-full flex flex-col h-full py-8 px-4">
       {/* Logo */}
-      <div className="flex items-center gap-2 mb-12 pl-2">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1E1E1E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <div className="flex items-center gap-3 mb-10 px-2">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
           <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
           <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
         </svg>
-        <span className="font-semibold text-xl bg-gradient-to-r from-[#0052D4] via-[#4364F7] to-[#6FB1FC] bg-clip-text text-transparent" style={{ fontFamily: "var(--font-poppins)" }}>Chai Reader</span>
+        <span
+          className="font-semibold"
+          style={{ fontFamily: "var(--font-poppins)", fontSize: "18px", color: "#0052D4" }}
+        >
+          Chai Reader
+        </span>
       </div>
 
-      <nav className="flex flex-col gap-1 px-4 flex-1">
+      {/* Nav Items */}
+      <nav className="flex flex-col gap-1 flex-1">
         {NAV_ITEMS.map((item) => {
           const isActive = item.id === activeCategory;
           return (
             <button
               key={item.id}
               onClick={() => onCategoryChange(item.id)}
-              className="flex items-center gap-4 px-4 py-[10px] rounded-lg text-left transition-all duration-150 w-full"
+              className="flex items-center gap-4 px-4 py-3.5 rounded-2xl text-left transition-all duration-150 w-full"
               style={{
                 backgroundColor: isActive ? "#FFFFFF" : "transparent",
-                boxShadow: isActive ? "0 1px 3px rgba(0,0,0,0.05)" : "none",
+                boxShadow: isActive ? "0 2px 8px rgba(0,0,0,0.02)" : "none",
               }}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={isActive ? "#1A1A1A" : "#717171"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke={isActive ? "#1A1A1A" : "#6B7280"}
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 {item.id === "settings" && <circle cx="12" cy="12" r="3"></circle>}
                 <path d={item.icon} />
               </svg>
               <span
                 style={{
                   fontFamily: "var(--font-poppins), Poppins, sans-serif",
-                  fontWeight: isActive ? 500 : 400,
-                  fontSize: "14px",
-                  color: isActive ? "#1A1A1A" : "#717171",
+                  fontWeight: isActive ? 600 : 400,
+                  fontSize: "15px",
+                  color: isActive ? "#1A1A1A" : "#4B5563",
                 }}
               >
                 {item.label}

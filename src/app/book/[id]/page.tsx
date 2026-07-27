@@ -33,11 +33,20 @@ export function generateStaticParams() {
   }));
 }
 
+import { EmptyState } from "@/components/ui/EmptyState";
+
 export default function BookDetailsPage({ params }: { params: { id: string } }) {
   const book = getBookById(params.id);
   
   if (!book) {
-    return <div>Book not found</div>;
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <EmptyState 
+          title="Book not found" 
+          description="We couldn't find the book you are looking for. It may have been removed or doesn't exist."
+        />
+      </div>
+    );
   }
 
   return <BookDetailClient book={book} />;

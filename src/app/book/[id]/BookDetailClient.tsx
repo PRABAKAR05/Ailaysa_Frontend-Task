@@ -4,21 +4,41 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { newArrivals } from "@/lib/browse-data";
 import type { Book } from "@/lib/browse-data";
 import { SidebarNav } from "@/components/browse/BrowseComponents";
+import { motion } from "framer-motion";
 
 export default function BookDetailClient({ book }: { book: Book }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("browse");
+  const router = useRouter();
+
+  const handleCategoryChange = (id: string) => {
+    setActiveCategory(id);
+    setSidebarOpen(false);
+    if (id === "browse") {
+      router.push("/browse");
+    } else {
+      router.push(`/browse#${id}`);
+    }
+  };
 
   return (
-    <div
-      className="min-h-screen bg-white text-[#1A1A1A]"
-      style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -15 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+      className="flex-1 w-full"
     >
-      <div className="flex w-full min-h-screen">
-        {/* Mobile sidebar overlay */}
+      <div
+        className="min-h-screen bg-white text-[#1A1A1A]"
+        style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
+      >
+        <div className="flex w-full min-h-screen">
+          {/* Mobile sidebar overlay */}
         {sidebarOpen && (
           <div
             className="fixed inset-0 bg-black/30 z-50 md:hidden"
@@ -27,17 +47,17 @@ export default function BookDetailClient({ book }: { book: Book }) {
             <aside className="w-[240px] bg-[#FDF9EE] h-full transform transition-transform">
               <SidebarNav
                 activeCategory={activeCategory}
-                onCategoryChange={setActiveCategory}
+                onCategoryChange={handleCategoryChange}
               />
             </aside>
           </div>
         )}
 
         {/* Desktop Sidebar */}
-        <aside className="hidden md:block w-[240px] shrink-0 bg-[#FDF9EE]">
+        <aside className="hidden md:flex flex-col w-[260px] shrink-0 bg-[#FDF9EE] self-start rounded-br-[30px]">
           <SidebarNav
             activeCategory={activeCategory}
-            onCategoryChange={setActiveCategory}
+                onCategoryChange={handleCategoryChange}
           />
         </aside>
 
@@ -74,18 +94,18 @@ export default function BookDetailClient({ book }: { book: Book }) {
                   <Image src={book.coverImage} alt={book.title} fill className="object-cover" />
                 </div>
                 <div className="flex gap-4">
-                  <button className="flex-1 rounded-xl py-3.5 bg-white border border-gray-300 text-[#1A1A1A] text-[14px] font-medium transition-colors hover:bg-gray-50 shadow-sm">
+                  <button className="flex-1 rounded-xl py-3.5 bg-white border border-gray-300 text-[#1A1A1A] text-[14px] font-medium transition-all hover:bg-gray-50 active:scale-95 shadow-sm hover:shadow-md">
                     Read
                   </button>
-                  <button className="flex-1 rounded-xl py-3.5 bg-[#1C1F26] text-white text-[14px] font-medium transition-colors hover:bg-black shadow-sm">
+                  <button className="flex-1 rounded-xl py-3.5 bg-[#1C1F26] text-white text-[14px] font-medium transition-all hover:bg-black active:scale-95 shadow-sm hover:shadow-md">
                     Chat Now
                   </button>
                 </div>
               </div>
 
               {/* Right Column: Details */}
-              <div className="flex-1 pt-2">
-                <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#231A36] leading-tight mb-4">
+              <div className="flex-1 pt-2 min-w-0">
+                <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#231A36] leading-tight mb-4 truncate">
                   {book.title}
                 </h1>
                 
@@ -140,8 +160,8 @@ export default function BookDetailClient({ book }: { book: Book }) {
                     <div className="w-[100px] h-[100px] relative rounded-2xl overflow-hidden shrink-0 shadow-sm bg-gray-100">
                       <Image src="/books/author-jk.png" alt="J.K Rowling" fill className="object-cover" />
                     </div>
-                    <div>
-                      <h4 className="text-xl font-bold text-[#492B89] mb-2">J.K Rowling</h4>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-xl font-bold text-[#492B89] mb-2 truncate">J.K Rowling</h4>
                       <p className="text-[14px] text-[#666666] leading-relaxed max-w-3xl mb-3">
                         British author best known for creating the Harry Potter series, one of the most popular and influential fantasy stories in the world.British author best known for creating the Harry Potter series, one of the most popular and influential fantasy stories in the world.
                       </p>
@@ -164,8 +184,8 @@ export default function BookDetailClient({ book }: { book: Book }) {
                         <div className="w-[42px] h-[42px] rounded-full overflow-hidden shrink-0 bg-gray-200 shadow-sm">
                            <Image src="/books/author-chetan.png" alt="Reviewer" width={42} height={42} className="object-cover" />
                         </div>
-                        <div>
-                          <h5 className="font-medium text-[#1A1A1A] mb-1.5 text-[15px]">Vinuja</h5>
+                        <div className="flex-1 min-w-0">
+                          <h5 className="font-medium text-[#1A1A1A] mb-1.5 text-[15px] truncate">Vinuja</h5>
                           <p className="text-[14px] text-[#666666] leading-relaxed">
                             British author best known for creating the Harry Potter series, one of the most popular and influential fantasy stories in the world.British author best known for creating the Harry Potter.
                           </p>
@@ -208,5 +228,6 @@ export default function BookDetailClient({ book }: { book: Book }) {
         </div>
       </div>
     </div>
+    </motion.div>
   );
 }
