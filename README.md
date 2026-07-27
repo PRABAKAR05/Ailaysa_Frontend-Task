@@ -5,6 +5,15 @@
 A premium, pixel-perfect frontend clone of the Ailaysa digital library interface. Built with a focus on modern web aesthetics, smooth micro-interactions, and a flawless user experience.
 
 🚀 **Live Demo:** [https://ailaysa-frontend-task.vercel.app/browse/](https://ailaysa-frontend-task.vercel.app/browse/)
+---
+
+## 📸 Screenshots
+
+| Page | Screenshot |
+|------|------------|
+| **Browse** | ![Browse page](https://github.com/PRABAKAR05/Ailaysa_Frontend-Task/raw/main/public/screenshot/browse.jpeg) |
+| **Author Page** | ![Author page](https://github.com/PRABAKAR05/Ailaysa_Frontend-Task/raw/main/public/screenshot/author_page.jpeg) |
+| **Book Page** | ![Book page](https://github.com/PRABAKAR05/Ailaysa_Frontend-Task/raw/main/public/screenshot/book_page.jpeg) |
 
 ---
 
