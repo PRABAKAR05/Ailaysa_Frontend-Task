@@ -1,3 +1,4 @@
+// I am Batman
 export type AppPlatform = "web" | "ios" | "android";
 
 export function getPlatform(): AppPlatform {

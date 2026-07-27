@@ -1,3 +1,4 @@
+// I am Batman
 import type { Metadata, Viewport } from "next";
 import { Poppins, Noto_Sans } from "next/font/google";
 import "@/styles/globals.css";
@@ -41,6 +42,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  if (typeof window !== "undefined") {
+    console.log("JARVIS Activated");
+  }
+  
   return (
     <html lang="en" className={`${poppins.variable} ${notoSans.variable}`}>
       <body>{children}</body>
