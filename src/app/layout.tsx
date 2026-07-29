@@ -18,6 +18,7 @@ const notoSans = Noto_Sans({
 });
 
 import { APP_NAME } from "@/lib/constants";
+import { ClientLogger } from "@/components/ClientLogger";
 
 export const metadata: Metadata = {
   title: APP_NAME,
@@ -42,13 +43,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  if (typeof window !== "undefined") {
-    console.log("JARVIS Activated");
-  }
-  
   return (
     <html lang="en" className={`${poppins.variable} ${notoSans.variable}`}>
-      <body>{children}</body>
+      <body>
+        <ClientLogger />
+        {children}
+      </body>
     </html>
   );
 }

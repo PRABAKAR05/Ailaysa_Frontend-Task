@@ -1,3 +1,4 @@
+// I am Batman
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Static export for Capacitor (serves from /out)
