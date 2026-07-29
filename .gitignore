@@ -39,3 +39,8 @@ next-env.d.ts
 /ios
 /android
 .capacitor
+
+# debug/scratch scripts
+/scratch
+*.py
+audit.py
