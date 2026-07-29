@@ -1,4 +1,3 @@
-// I am Batman
 import {
   heroBook,
   genrePills,

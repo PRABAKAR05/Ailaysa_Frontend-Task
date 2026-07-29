@@ -1,4 +1,3 @@
-// I am Batman
 import { cn } from "@/lib/cn";
 
 type AppShellProps = {

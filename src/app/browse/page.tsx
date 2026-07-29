@@ -1,4 +1,3 @@
-// I am Batman
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -41,8 +40,6 @@ export default function BrowsePage() {
     setSidebarOpen(false);
     if (id === "browse") {
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } else if (id === "masala-packet") {
-      window.location.href = "/masala-packet";
     } else {
       const element = document.getElementById(id);
       if (element) {

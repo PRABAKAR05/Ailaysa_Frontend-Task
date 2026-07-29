@@ -1,4 +1,3 @@
-// I am Batman
 "use client";
 
 import { useState } from "react";
@@ -20,8 +19,6 @@ export default function BookDetailClient({ book }: { book: Book }) {
     setSidebarOpen(false);
     if (id === "browse") {
       router.push("/browse");
-    } else if (id === "masala-packet") {
-      router.push("/masala-packet");
     } else {
       router.push(`/browse#${id}`);
     }

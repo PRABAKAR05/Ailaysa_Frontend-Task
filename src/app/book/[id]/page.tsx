@@ -1,4 +1,3 @@
-// I am Batman
 import { getBookById } from "@/lib/book-details-data";
 import BookDetailClient from "./BookDetailClient";
 import {

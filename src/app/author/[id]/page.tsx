@@ -1,4 +1,3 @@
-// I am Batman
 import AuthorClient from "./AuthorClient";
 import { famousAuthors } from "@/lib/browse-data";
 

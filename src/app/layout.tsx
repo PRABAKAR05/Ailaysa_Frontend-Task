@@ -1,4 +1,3 @@
-// I am Batman
 import type { Metadata, Viewport } from "next";
 import { Poppins, Noto_Sans } from "next/font/google";
 import "@/styles/globals.css";
@@ -18,11 +17,10 @@ const notoSans = Noto_Sans({
 });
 
 import { APP_NAME } from "@/lib/constants";
-import { ClientLogger } from "@/components/ClientLogger";
 
 export const metadata: Metadata = {
   title: APP_NAME,
-  description: `${APP_NAME} — web and mobile app`,
+  description: `${APP_NAME} — Browse books, discover authors, and explore curated collections.`,
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -45,10 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${poppins.variable} ${notoSans.variable}`}>
-      <body>
-        <ClientLogger />
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
